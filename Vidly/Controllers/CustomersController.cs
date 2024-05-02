@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Vidly.Models;
 using System.Data.Entity;
-using Vidly.ViewModels;
+using Vidly.Models;
 
 namespace Vidly.Controllers
 {
-    public class MoviesController : Controller
+    public class CustomersController : Controller
     {
         private ApplicationDbContext _context;
 
-        public MoviesController()
+        public CustomersController()
         {
             _context = new ApplicationDbContext();
         }
@@ -18,19 +17,21 @@ namespace Vidly.Controllers
         {
             _context.Dispose();
         }
-
         public ViewResult Index()
         {
-            var movies = _context.Movies.Include(x => x.Genre).ToList();
+            var customers = _context.Customers.Include(x => x.MembershipType).ToList();
 
-            return View(movies);
+            return View(customers);
         }
 
         public ActionResult Details(int id)
         {
-            var movie = _context.Movies.Include(x => x.Genre).SingleOrDefault(x => x.Id == id);
-            return View(movie);
-        }
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
 
+            if (customer == null)
+                return NotFound();
+
+            return View(customer);
+        }
     }
 }
