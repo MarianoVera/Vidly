@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data.Entity;
 using Vidly.Models;
+using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
@@ -16,6 +17,17 @@ namespace Vidly.Controllers
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
+        }
+
+        public ActionResult New()
+        {
+            var membershipTypes = _context.MembershipTypes.ToList();
+            var viewModel = new NewCustomerViewModel()
+            {
+                MembershipType = membershipTypes
+            };
+
+            return View(viewModel);
         }
         public ViewResult Index()
         {
